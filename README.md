@@ -1,4 +1,17 @@
 # Spring Open AI API
+<p align="center">
+  <a href="#installation">Installation</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#endpoints">Endpoints</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#usage">Usage</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#swagger">Swagger</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#technologies">Technologies</a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/migueldelgg/spring-ai-api/issues">Report bug</a>
+  ·
+  <a href="https://github.com/migueldelgg/spring-ai-api/issues">Request feature</a>
+</p>
 
 ## Installation
 Install the Maven dependency manager using the following tutorial:
@@ -10,7 +23,7 @@ Install IntelliJ IDEA Community Edition to run the project:
 Install Git and clone the project using Git Bash:
 [Git Installation and Project Cloning Tutorial](https://www.youtube.com/watch?v=_hZf1teRFNg&t=1676s&pp=ygUZaW5zdGFsZSBvIGdpdCBuZWxpbyBhbHZlcw%3D%3D).
 
-## API Endpoints
+## Endpoints
 
 The application has a single endpoint:
 GET /startupidea/chat
@@ -42,3 +55,9 @@ For easier usage of the application, an endpoint using the Swagger documentation
 
 On the page, scroll down to the "Try it out" section, click on it, and in the query parameter field, enter your input for the chat.
 ![image](https://github.com/migueldelgg/spring-ai-api/assets/150628051/66ae2bfa-713b-4412-9b5f-974ecfac6583)
+
+## Technologies
+- Java
+- Spring AI
+- Spring Web
+- Swagger
