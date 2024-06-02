@@ -14,6 +14,9 @@ Install Git and clone the project using Git Bash:
 
 The application has a single endpoint:
 GET /startupidea/chat
+```markdown
+GET /startupidea/chat
+```
 
 ## Usage
 To make the application work, you need to include your OpenAI API license key. To do this, access the application.properties file in the project. Navigate to the root project directory and follow the path:
