@@ -1,7 +1,7 @@
 package br.com.migueldelgado.spring_boot_chatgpt.controller;
 
-import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.model.ChatResponse;
+import br.com.migueldelgado.spring_boot_chatgpt.service.StartupIdeaService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -9,17 +9,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/startupidea")
 public class StartupIdeaController {
 
-    private final ChatClient chatClient;
-
-    public StartupIdeaController(ChatClient.Builder chatClientBuilder) {
-        this.chatClient = chatClientBuilder.build();
-    }
+    @Autowired
+    private StartupIdeaService service;
 
     @GetMapping("/chat")
-    public ChatResponse generation(@RequestParam(value = "message",
+    public String generation(@RequestParam(value = "message",
             defaultValue = "De ideias de startups inovadoras para o futuro.") String message) {
 
-        ChatResponse response = chatClient.prompt().user(message).call().chatResponse();
+        String response = service.execute(message);
 
         return response;
     }
