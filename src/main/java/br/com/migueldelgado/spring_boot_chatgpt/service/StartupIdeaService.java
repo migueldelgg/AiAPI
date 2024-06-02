@@ -1,54 +1,54 @@
 package br.com.migueldelgado.spring_boot_chatgpt.service;
 
-import br.com.migueldelgado.spring_boot_chatgpt.dto.Message;
-import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.model.ChatModel;
-import org.springframework.ai.chat.model.ChatResponse;
-import org.springframework.ai.chat.prompt.ChatOptionsBuilder;
-import org.springframework.ai.chat.prompt.Prompt;
+import br.com.migueldelgado.spring_boot_chatgpt.dto.ChatGPTRequest;
+import br.com.migueldelgado.spring_boot_chatgpt.dto.ChatGPTResponse;
 import org.springframework.ai.chat.prompt.PromptTemplate;
-
-import org.springframework.ai.openai.OpenAiChatModel;
-import org.springframework.ai.openai.OpenAiChatOptions;
-import org.springframework.ai.openai.api.OpenAiApi;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class StartupIdeaService {
 
-    private final String apiKey;
+    @Value("${openai.api.model}")
+    private String model;
 
-    private final ChatClient chatClient;
+    @Value("${openai.api.url}")
+    private String url;
 
-    public StartupIdeaService(ChatClient.Builder chatClientBuilder,
-                              @Value("${spring.ai.openai.api-key}") String apiKey) {
-        this.chatClient = chatClientBuilder.build();
-        this.apiKey = apiKey;
+    @Qualifier("openaiRestTemplate")
+    @Autowired
+    private RestTemplate template;
+
+    public String generatePromptFromMessage(String userPrompt) {
+        PromptTemplate prompt = new PromptTemplate(PromptMessage.TEMPLATE);
+
+        prompt.add("userPrompt", userPrompt);
+
+        var responseCreated = prompt.create();
+
+        return responseCreated.getContents();
     }
 
-    public String execute(String message) {
-        PromptTemplate prompt = new PromptTemplate(PromptMessage.TEMPLATE + message);
+    public String execute(String userPrompt) {
 
-        // Imprimir o template para ver se a substituição está correta
-        System.out.println("Prompt after substitution: " + prompt.getTemplate());
+        var prompt = generatePromptFromMessage(userPrompt);
 
-        Flux<String> responseFlux = chatClient.prompt()
-                .user(prompt.getTemplate())
-                .stream()
-                .content();
+        // Cria a request para a API da Open AI
+        ChatGPTRequest request = new ChatGPTRequest(model, prompt);
 
-        String response = responseFlux.collectList().block().stream().collect(Collectors.joining());
+        // Chama a API da Open AI
+        ChatGPTResponse response = template.postForObject(url, request, ChatGPTResponse.class);
 
-        return response;
+        // Verifica se a API da Open AI retornou alguma resposta.
+        if (response == null || response.choices() == null || response.choices().isEmpty()) {
+            return "No response";
+        }
+
+        // Retorna a primeira resposta.
+        return response.choices().get(0).message().content();
     }
-
-
 
 }

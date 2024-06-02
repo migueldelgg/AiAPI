@@ -1,4 +1,4 @@
-package br.com.migueldelgado.spring_boot_chatgpt.service;
+package br.com.migueldelgado.spring_boot_chatgpt.config;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
